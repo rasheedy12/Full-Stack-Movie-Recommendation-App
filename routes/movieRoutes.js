@@ -13,7 +13,7 @@ movieRouter.get('/search', async (req, res) => {
         const response = await axios.get(`${TMDB_BASE_URL}/search/movie`, {
             params: { api_key: TMDB_API_KEY, query }
         });
-        res.json(response.data);
+        res.json(response.data.results); // Return only the results array
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -30,7 +30,7 @@ movieRouter.get('/discover', async (req, res) => {
                 primary_release_year: year
             }
         });
-        res.json(response.data);
+        res.json(response.data.results); // Return only the results array
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
