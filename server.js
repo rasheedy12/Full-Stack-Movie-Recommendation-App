@@ -2,9 +2,11 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const path = require('path');
 
 // Load environment variables
-dotenv.config();
+// Always load dotenv from the config/.env file
+dotenv.config({ path: path.resolve(__dirname, 'config/.env') });
 
 const app = express();
 
@@ -16,6 +18,10 @@ app.use(express.json());
 
 // --- Database Connection ---
 const connectDB = async () => {
+    if (!process.env.MONGO_URI) {
+        console.error('MONGO_URI is not defined. Please check your .env file.');
+        process.exit(1);
+    }
     try {
         await mongoose.connect(process.env.MONGO_URI);
         console.log('MongoDB Connected successfully.');
